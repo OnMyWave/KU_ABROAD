@@ -9,6 +9,8 @@ var usersRouter = require('./routes/users');
 var univRouter = require('./routes/univ');
 
 const PORT = process.env.PORT || 3000
+
+app = express()
 app.listen(PORT);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
