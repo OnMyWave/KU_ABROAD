@@ -13,7 +13,10 @@ db.on('error', function(){
 });
 // 5. 연결 성공
 db.once('open', function() {
-    console.log('Connected!');
+    console.log('2022 KOREA UNIVERSITY DATATHON : KU-ABROAD Project');
+    console.log('');
+    console.log('MongoDB 데이터 베이스가 연결되었습니다.');
+    console.log('');
 });
 
 // Collection 연결
@@ -69,7 +72,8 @@ var Univ = mongoose.model('univ_data', UnivSchema);
 
 
 Univ.find(function(error, univ){
-    console.log('--- Read all ---');
+    console.log('--- Log History ---');
+    console.log('');
     if(error){
         console.log(error);
     }else{
