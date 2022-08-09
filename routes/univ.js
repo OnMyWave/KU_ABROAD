@@ -2,8 +2,34 @@
 var mongoose = require('mongoose');
 var express = require('express');
 var router = express.Router();
-var movies = require('../movies.json');
+var { Client } = require('pg');
+// router.get('/', function(request, response, next) {
+//     var con = "tcp://whyiedwromfnme:5791c0ed420ea1dbf2f6bce17a176a9ecc9b5932c575901770525fd9b1b92a28@ec2-34-239-241-121.compute-1.amazonaws.com:5432/d6g79vk92ma405";
+//     pg.connect(con, function(err, client) {
+//         var query = client.query('select * from univ_data;');
+//         var rows = [];
+//         query.on('row', function(row) {
+//             rows.push(row);
+//         });
+//         query.on('end', function(row,err) {
+//             response.render('index', { 
+//                 title: 'Express',
+//                 data:rows
+//             });
+//         });
+//         query.on('error', function(error) {
+//             console.log("ERROR!!" + error);
+//             response.render('index', {
+//                 title: title,
+//                 data: null,
+//                 message: "ERROR is occured!"
+//             });
+//         });
+//     });
+// });
+
 // 2. testDB 세팅
+
 mongoose.connect('mongodb://localhost:27017/db');
 // 3. 연결된 testDB 사용
 var db = mongoose.connection;
