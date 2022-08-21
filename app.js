@@ -3,20 +3,23 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var history = require('connect-history-api-fallback');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var univRouter = require('./routes/univ');
+
 // var searchRouter = require('./routes/search');
 // var recommendRouter = require('./routes/recommend');
 
 const PORT = process.env.PORT || 3000
 
-app = express()
+app = express();
 app.listen(PORT);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+app.use(history());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
