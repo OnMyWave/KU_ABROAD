@@ -10,7 +10,7 @@ var usersRouter = require('./routes/users');
 var univRouter = require('./routes/univ');
 
 // var searchRouter = require('./routes/search');
-// var recommendRouter = require('./routes/recommend');
+var recommendRouter = require('./routes/recommend');
 
 const PORT = process.env.PORT || 3000
 
@@ -30,7 +30,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api/univ/', univRouter);
 // app.use('/api/search/', searchRouter);
-// app.use('/api/recommendRouter/', recommendRouter );
+app.use('/api/recommend/', recommendRouter );
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
