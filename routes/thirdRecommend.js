@@ -66,8 +66,6 @@ router.get('/', (req,res) => {
   // 넘어온 쿼리 변수 설정
   const userSelect = req.query;
   console.log(userSelect);
-  // 필터용 쿼리
-  //
   const defaultUserQuery = [{'continent':  userSelect.country},{[existCollege[userSelect.college]]:'1'}];
   // 다중 선택하는 언어 관련 쿼리
   let languageQuery = [];
@@ -94,7 +92,8 @@ router.get('/', (req,res) => {
     weightObject[component] = weight[component][i];
   }
 // 언어, 단과대학, 대륙으로 먼저 Query 실행
-  Univ.find({$and : [{$and : defaultUserQuery },{$or : languageQuery}]})
+  if (('english' in languageArray)){
+    Univ.find({$and : [{$and : {[existCollege[userSelect.college]]:'1'} },{$or : languageQuery}]})
         .then((data) => {
           if (!data) return res.status(404).send({ err: 'Univ not found' });
           for (let i = 0; i < data.length ; i++) {
@@ -138,7 +137,53 @@ router.get('/', (req,res) => {
           res.send(result[0]);
         })
         .catch(err => res.status(500).send(err));
-});
+}else{
+    Univ.find({$and : defaultUserQuery})
+        .then((data) => {
+          if (!data) return res.status(404).send({ err: 'Univ not found' });
+          for (let i = 0; i < data.length ; i++) {
+            // const obj = data[i];
+            let score = 0;
+            // QS 랭킹 
+            score += data[i][scoreCollege[userSelect.college]] * weightObject['ranking'];
+            // 물가
+            score += data[i]['living_num'] * weightObject['money'];
+            // 날씨
+            let weatherNum = weatherMatching[userSelect.weather];
+            score += weatherMatrix[weatherNum][parseInt(weatherNum)] * weightObject['weather'];
+            // 기숙사 존재 및 1인 기숙사
+            score += (55 + 10*data[i]['sum_domi']) * weightObject['dormitory'];
+            // 교통 편리함
+            score += (55 + 10*data[i]['bus'] + 15*data[i]['train']);
+            // 사회적 가치 반영 부분
+            // Crime INDEX
+            score += data[i]['crime_idx'];
+            // SDGs INDEX
+            score += (data[i]['sdg_idx'] / 33) ; 
+            // GVI INDEX
+            if (data[i]['gvi_idx'] === 1) {
+              score += 1 ; 
+            }else{
+              score += data[i]['gvi_idx'] / 33
+            }
+            // travel_idx
+            score += data[i]['travel_idx'] / 33
+            // 국제학생 비율 
+            score += data[i]['inter_stu_ratio'] * 5
+            
+            data[i].score = score;
+            
+          };
+          // 내림차순으로 정렬
+          result = data.sort(function (a, b) {
+            return b.score - a.score;
+          });
+          // 스코어 제일 큰 값 보냄
+          res.send(result[0]);
+        })
+        .catch(err => res.status(500).send(err));
+}});
+  
 
 
 module.exports = router;
