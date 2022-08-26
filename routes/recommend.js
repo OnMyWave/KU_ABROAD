@@ -21,8 +21,8 @@ const scoreCollege = {
 
 // 스코어 계산에 필요한 Matrix 및 Constants
 const weight = {
-  'ranking' : [1,0.99,0.98,0.96,0.93,0.89],
-  'money' : [-0.84, -0.89,	-0.93,	-0.96,	-0.98,	-1],
+  'ranking' : [1.2,0.99,0.98,0.96,0.93,0.89],
+  'money' : [-1, -0.98, -0.96, -0.93,-0.89, -0.84	],
   'weather' : [1,	0.94,	0.88,	0.8,	0.7,	0.58],
   'transportation' : [1,	0.94,	0.88,	0.8,	0.7,	0.58],
   'dormitory' : [1,	0.94,	0.88,	0.8,	0.7,	0.58],
@@ -106,11 +106,11 @@ router.get('/', (req,res) => {
             score += data[i]['living_num'] * weightObject['money'];
             // 날씨
             let weatherNum = weatherMatching[userSelect.weather];
-            score += weatherMatrix[weatherNum][parseInt(weatherNum)] * weightObject['weather'];
+            score += weatherMatrix[weatherNum][parseInt(weatherNum)-1] * weightObject['weather'];
             // 기숙사 존재 및 1인 기숙사
             score += (55 + 10*data[i]['sum_domi']) * weightObject['dormitory'];
             // 교통 편리함
-            score += (55 + 10*data[i]['bus'] + 15*data[i]['train']);
+            score += (50 + 5*data[i]['bus'] + 5*data[i]['train'])*weightObject['transportation'];
             // 사회적 가치 반영 부분
             // Crime INDEX
             score += data[i]['crime_idx'];
@@ -135,6 +135,9 @@ router.get('/', (req,res) => {
             return b.score - a.score;
           });
           // 스코어 제일 큰 값 보냄
+          for (let i = 0 ; i< data.length ; i++){
+            console.log(data[i].score);
+          }
           res.send(result[0]);
         })
         .catch(err => res.status(500).send(err));
