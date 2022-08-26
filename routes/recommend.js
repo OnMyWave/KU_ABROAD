@@ -65,10 +65,9 @@ function toArray(sentence) {
 router.get('/', (req, res) => {
     // 넘어온 쿼리 변수 설정
     const userSelect = req.query;
-    console.log(userSelect);
     // 필터용 쿼리
     //
-    let defaultUserQuery = [{ 'continent': userSelect.country }, { [existCollege[userSelect.college]]: 1 }];
+    let defaultUserQuery = [{ 'continent': { '$regex': userSelect.country, '$options': 'i' } }, { [existCollege[userSelect.college]]: 1 }];
     if (userSelect.country === 'none') {
         defaultUserQuery = [{ [existCollege[userSelect.college]]: 1 }];
     }
@@ -138,8 +137,7 @@ router.get('/', (req, res) => {
                 return b.score - a.score;
             });
             // 스코어 제일 큰 값 보냄
-            res.send(result[0]);
-
+            res.send(result);
         })
         .catch(err => res.status(500).send(err));
 });
