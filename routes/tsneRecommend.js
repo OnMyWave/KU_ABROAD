@@ -6,7 +6,6 @@ router.get('/', (req,res) => {
     if (!req.query.name){
         return res.status(404).send({ err: 'Univ not found' })
     };
-  // 넘어온 쿼리 변수 설정
     let x = 0 ; 
     let y = 0 ;
     for (let i = 0; i < tSNE.length ; i++) {
