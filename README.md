@@ -1,4 +1,5 @@
 # 2022 KOREA UNIVERSITY SMARTCAMPUS DATATHON
+### https://kuabroad.herokuapp.com
 
 ## KU-ABROAD : 고려대학교 구성원을 위한 교환학교 추천 및 정보 제공 플랫폼
 ### 프로젝트 기간
